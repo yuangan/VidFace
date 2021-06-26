@@ -16,3 +16,8 @@ In this paper, we investigate the task of hallucinating an authentic high-resolu
       journal={arXiv preprint arXiv:2105.14954},
       year={2021}
     }
+    
+## :wrench: Dependencies and Installation
+- Python >= 3.7
+- [PyTorch >= 1.3](https://pytorch.org/)
+- NVIDIA GPU + [CUDA](https://developer.nvidia.com/cuda-downloads)
