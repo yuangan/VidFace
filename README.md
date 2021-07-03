@@ -52,7 +52,7 @@ In this paper, we investigate the task of hallucinating an authentic high-resolu
 VidFace has been tested on Linux and Windows with anaconda.
 
 ## :package: Dataset Preparation
-1. TUFS145K images can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [Baidu](), then excute ```cat tufs145ka* > tufs145k.zip'``` and extract it to VidFace fold.
+1. TUFS145K images can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [Baidu](), then excute ```cat tufs145ka* > tufs145k.zip``` and extract it to VidFace fold.
 3. TUFS145K landmarks can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [Baidu](), extract it to './landmarks'
 
 1. Prepare your dataset
