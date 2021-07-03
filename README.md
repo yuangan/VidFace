@@ -18,6 +18,48 @@ In this paper, we investigate the task of hallucinating an authentic high-resolu
     }
     
 ## :wrench: Dependencies and Installation
+(This work is based on the framework of [BasicSR](https://github.com/xinntao/EDVR))
 - Python >= 3.7
 - [PyTorch >= 1.3](https://pytorch.org/)
 - NVIDIA GPU + [CUDA](https://developer.nvidia.com/cuda-downloads)
+1. Clone repo
+
+    ```bash
+    git clone https://github.com/yuangan/VidFace.git
+    ```
+
+1. Install dependent packages
+
+    ```bash
+    cd VidFace
+    pip install -r requirements.txt
+    ```
+
+1. Install VidFace
+    ```
+    python setup.py develop
+    ```
+    
+    You may also want to specify the CUDA paths:
+
+      ```bash
+      CUDA_HOME=/usr/local/cuda \
+      CUDNN_INCLUDE_DIR=/usr/local/cuda \
+      CUDNN_LIB_DIR=/usr/local/cuda \
+      python setup.py develop
+      ```
+      
+VidFace has been tested on Linux and Windows with anaconda.
+
+## :package: Dataset Preparation
+1. TUFS145K images can be downloaded from [Google]() or [Baidu](), then extract it to VidFace fold or somewhere you can find it().
+2. TUFS145K landmarks can be downloaded from [Google]() or [Baidu](), extract it to './landmarks'
+
+1. Prepare your dataset
+- Please refer to **[DatasetPreparation.md](docs/DatasetPreparation.md)** for more details.
+
+## :computer: Train and Test
+
+- **Training and testing commands**: 
+
+
