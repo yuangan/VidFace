@@ -63,12 +63,14 @@ Prepare your dataset
     ```
         CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port=4327 basicsr/train.py -opt options/train/VidFace/vidface_h48_norm_l10.yml --launcher pytorch
     ```
-PS: if you want to get the result in our paper, plz use the ```tufs_train_val.txt``` in ```options/train/VidFace/vidface_final_h48_norm_l10.yml```.
+If you want to get the result in our paper, plz use the ```tufs_train_val.txt``` in ```options/train/VidFace/vidface_final_h48_norm_l10.yml```.
+
 - **Testing with One GPU**:
     ```
-    CUDA_VISIBLE_DEVICES=0 python basicsr/test.py -opt options/test/EDVR/test_tufs145k.yml
+    CUDA_VISIBLE_DEVICES=0 python basicsr/test.py -opt options/test/VidFace/test_tufs145k.yml
     ```
 - **Testing with Multiple GPU**:
     ```
-    CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port=4442 basicsr/test.py -opt options/test/EDVR/test_tufs145k.yml --launcher pytorch
+    CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port=4442 basicsr/test.py -opt options/test/VidFace/test_tufs145k.yml --launcher pytorch
     ```
+If you want to get the result of IJBC, plz use ```options/test/VidFace/test_ijbc.yml``` to replace ```options/test/VidFace/test_tufs145k.yml```.
