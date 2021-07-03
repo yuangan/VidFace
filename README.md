@@ -1,4 +1,4 @@
-# VidFace
+# 🛠️VidFace
 (The official code)
 
 ### :book: VidFace: A Full-Transformer Solver for Video FaceHallucination with Unaligned Tiny Snapshots
