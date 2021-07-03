@@ -66,7 +66,9 @@ Prepare your dataset
 PS: if you want to get the result in our paper, plz use the ```tufs_train_val.txt``` in ```options/train/VidFace/vidface_final_h48_norm_l10.yml```.
 - **Testing with One GPU**:
     ```
+    CUDA_VISIBLE_DEVICES=0 python basicsr/test.py -opt options/test/EDVR/test_tufs145k.yml
     ```
 - **Testing with Multiple GPU**:
     ```
+    CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port=4442 basicsr/test.py -opt options/test/EDVR/test_tufs145k.yml --launcher pytorch
     ```
