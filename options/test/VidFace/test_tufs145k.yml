@@ -1,0 +1,44 @@
+name: test_transformer_vidface_h48t_tufs145k 
+model_type: EDVRModel
+scale: 4
+num_gpu: 1  # set num_gpu: 0 for cpu mode
+manual_seed: 0
+
+datasets:
+  test:
+    name: VOX
+    type: VideoTestTUFS145KDataset
+    dataroot_gt: /data2/wei/vox-unalign/GT #/data/wei/IJB_edvr_96_128/GT
+    dataroot_lq: /data2/wei/vox-unalign/LR #/data/wei/IJB_edvr_96_128/LR
+    meta_info_file: basicsr/data/meta_info/unalign_vox_test.txt #basicsr/data/meta_info/ijb_192_256.txt
+
+    io_backend:
+      type: disk
+
+    cache_data: false
+    num_frame: 7
+    padding: reflection_circle
+
+# network structures
+network_g:
+  type: VidFace
+  
+# path
+path:
+  pretrain_model_g: experiments/unt2t_vit_h48_final_norm_l10_6/models/net_g_600000.pth
+  strict_load: true
+  
+# validation settings
+val:
+  save_img: false
+  suffix: ~  # add suffix to saved images, if None, use exp name
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: true
+    ssim:
+      type: calculate_ssim
+      crop_border: 0
+      test_y_channel: true

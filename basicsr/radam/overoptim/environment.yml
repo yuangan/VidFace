@@ -1,0 +1,24 @@
+name: over9000
+channels:
+  - fastai
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - ipykernel
+  - python
+  - pip
+  - ipywidgets
+  - fastai 
+  - pytorch>=1.6,<1.7
+  - future
+  - torchvision 
+  - cuda100 
+  - cudatoolkit
+  - absl-py
+  - statsmodels
+  - pip:
+    - wandb
+    - pytorch-lightning>=0.10
+    - tabulate
+    - colorama
