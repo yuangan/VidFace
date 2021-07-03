@@ -1,6 +1,5 @@
 # VidFace
 (The official code)
-（coming soon）
 
 ### :book: VidFace: A Full-Transformer Solver for Video FaceHallucination with Unaligned Tiny Snapshots
 > [[Paper](https://arxiv.org/abs/2105.14954)]
@@ -23,23 +22,18 @@ In this paper, we investigate the task of hallucinating an authentic high-resolu
 - [PyTorch >= 1.3](https://pytorch.org/)
 - NVIDIA GPU + [CUDA](https://developer.nvidia.com/cuda-downloads)
 1. Clone repo
-
     ```bash
     git clone https://github.com/yuangan/VidFace.git
     ```
-
 1. Install dependent packages
-
     ```bash
     cd VidFace
     pip install -r requirements.txt
     ```
-
 1. Install VidFace
     ```
     python setup.py develop
     ```
-    
     You may also want to specify the CUDA paths:
 
       ```bash
@@ -53,9 +47,9 @@ VidFace has been tested on Linux and Windows with anaconda.
 
 ## :package: Dataset Preparation
 1. TUFS145K images can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [Baidu](), then excute ```cat tufs145ka* > tufs145k.zip``` and extract it to VidFace fold.
-3. TUFS145K landmarks can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [Baidu](), extract it to './landmarks/'
+1. TUFS145K landmarks can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [Baidu](), extract it to './landmarks/'
 
-1. Prepare your dataset
+Prepare your dataset
 - Please refer to **[DatasetPreparation.md](docs/DatasetPreparation.md)** for more details.
 
 ## :computer: Train and Test
@@ -71,8 +65,8 @@ VidFace has been tested on Linux and Windows with anaconda.
         CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port=4327 basicsr/train.py -opt options/train/VidFace/vidface_h48_norm_l10.yml --launcher pytorch
     ```
 - **Testing with One GPU**:
-```
-```
+    ```
+    ```
 - **Testing with Multiple GPU**:
-```
-```
+    ```
+    ```
