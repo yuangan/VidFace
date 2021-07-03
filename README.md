@@ -53,13 +53,26 @@ VidFace has been tested on Linux and Windows with anaconda.
 
 ## :package: Dataset Preparation
 1. TUFS145K images can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [Baidu](), then excute ```cat tufs145ka* > tufs145k.zip``` and extract it to VidFace fold.
-3. TUFS145K landmarks can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [Baidu](), extract it to './landmarks'
+3. TUFS145K landmarks can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [Baidu](), extract it to './landmarks/'
 
 1. Prepare your dataset
 - Please refer to **[DatasetPreparation.md](docs/DatasetPreparation.md)** for more details.
 
 ## :computer: Train and Test
 
-- **Training and testing commands**: 
+**Training and testing commands**: 
+- **Training with One GPU**:
+    ```
+        CUDA_VISIBLE_DEVICES=0 python basicsr/train.py -opt options/train/VidFace/vidface_h48_norm_l10.yml
+    ```
+- **Training with Multiple GPU**:
 
-
+    ```
+        CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port=4327 basicsr/train.py -opt options/train/VidFace/vidface_h48_norm_l10.yml --launcher pytorch
+    ```
+- **Testing with One GPU**:
+```
+```
+- **Testing with Multiple GPU**:
+```
+```
