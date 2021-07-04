@@ -46,7 +46,7 @@ In this paper, we investigate the task of hallucinating an authentic high-resolu
 VidFace has been tested on Linux and Windows with anaconda.
 
 ## :package: Dataset Preparation
-1. TUFS145K images can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [[Baidu](https://pan.baidu.com/s/1tzXhLgySyH27w58Jr3xU3g), access code: lxvd], then excute ```cat tufs145ka* > tufs145k.zip``` and extract it to VidFace fold.
+1. TUFS145K images can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [[Baidu](https://pan.baidu.com/s/1tzXhLgySyH27w58Jr3xU3g), access code: lxvd], then excute ```cat tufs145ka* > tufs145k.zip``` and extract it to VidFace-main fold.
 1. TUFS145K landmarks can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [[Baidu](https://pan.baidu.com/s/1tzXhLgySyH27w58Jr3xU3g), access code: lxvd], download 'tufs145k_lmk_norm.pickle' and move it to './landmarks/'
 
 Prepare your dataset
@@ -73,7 +73,7 @@ If you want to get the result in our paper, plz use the ```tufs_train_val.txt```
     ```
     CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port=4442 basicsr/test.py -opt options/test/VidFace/test_tufs145k_final.yml --launcher pytorch
     ```
-If you want to get the result of IJBC, plz download 'IJBC' from above driver and extract 'IJBC_128_96_new.zip' to VidFace fold. Then test by relace ```options/test/VidFace/test_ijbc_final.yml``` with  ```options/test/VidFace/test_tufs145k_final.yml```.
+If you want to get the result of IJBC, plz download 'IJBC' from above driver and extract 'IJBC_128_96_new.zip' to VidFace-main fold. Then test by relace ```options/test/VidFace/test_ijbc_final.yml``` with  ```options/test/VidFace/test_tufs145k_final.yml```.
 
 ## 🍇: Trained Model
 If you don't want to train it by yourself, we provide a trained VidFace with 600000 iters now. you can download from above link in 'model' folder. Move 'net_g_600000.pth' to './experiments/' then you can get the result in our paper during testing.
