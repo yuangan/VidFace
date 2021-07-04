@@ -8,9 +8,9 @@ datasets:
   test:
     name: TUFS145K
     type: VideoTestTUFS145KDataset
-    dataroot_gt: /data2/wei/vox-unalign/GT 
-    dataroot_lq: /data2/wei/vox-unalign/LR 
-    meta_info_file: basicsr/data/meta_info/unalign_vox_test.txt 
+    dataroot_gt: ./tufs145k/GT 
+    dataroot_lq: ./tufs145k/LR 
+    meta_info_file: basicsr/data/meta_info/tufs_test.txt 
 
     io_backend:
       type: disk
@@ -25,7 +25,7 @@ network_g:
   
 # path
 path:
-  pretrain_model_g: experiments/vidface_unt2t_vit_final_norm_l10/models/net_g_600000.pth
+  pretrain_model_g: experiments/net_g_600000.pth
   strict_load: true
   
 # validation settings

@@ -6,7 +6,7 @@ manual_seed: 0
 
 datasets:
   test:
-    name: VOX
+    name: IJBC
     type: VideoTestTUFS145KDataset
     dataroot_gt: /data2/wei/IJBC_128_96_new/GT 
     dataroot_lq: /data2/wei/IJBC_128_96_new/LR 
