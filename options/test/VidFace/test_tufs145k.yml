@@ -10,7 +10,7 @@ datasets:
     type: VideoTestTUFS145KDataset
     dataroot_gt: /data2/wei/vox-unalign/GT 
     dataroot_lq: /data2/wei/vox-unalign/LR 
-    meta_info_file: basicsr/data/meta_info/unalign_vox_test.txt 
+    meta_info_file: basicsr/data/meta_info/tufs_test.txt 
 
     io_backend:
       type: disk
