@@ -46,8 +46,8 @@ In this paper, we investigate the task of hallucinating an authentic high-resolu
 VidFace has been tested on Linux and Windows with anaconda.
 
 ## :package: Dataset Preparation
-1. TUFS145K images can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [Baidu](), then excute ```cat tufs145ka* > tufs145k.zip``` and extract it to VidFace fold.
-1. TUFS145K landmarks can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [Baidu](), extract it to './landmarks/'
+1. TUFS145K images can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [[Baidu](https://pan.baidu.com/s/1tzXhLgySyH27w58Jr3xU3g), access code: lxvd], then excute ```cat tufs145ka* > tufs145k.zip``` and extract it to VidFace fold.
+1. TUFS145K landmarks can be downloaded from [Google](https://drive.google.com/drive/folders/1xsq09wmr8iXxhHBtsseY4Iwq6oH2i9mW?usp=sharing) or [[Baidu](https://pan.baidu.com/s/1tzXhLgySyH27w58Jr3xU3g), access code: lxvd], move it to './landmarks/'
 
 Prepare your dataset
 - Please refer to **[DatasetPreparation.md](docs/DatasetPreparation.md)** for more details.
@@ -63,10 +63,14 @@ Prepare your dataset
     ```
         CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port=4327 basicsr/train.py -opt options/train/VidFace/vidface_h48_norm_l10.yml --launcher pytorch
     ```
-PS: if you want to get the result in our paper, plz use the ```tufs_train_val.txt``` in ```options/train/VidFace/vidface_final_h48_norm_l10.yml```.
+If you want to get the result in our paper, plz use the ```tufs_train_val.txt``` in ```options/train/VidFace/vidface_final_h48_norm_l10.yml```.
+
 - **Testing with One GPU**:
     ```
+    CUDA_VISIBLE_DEVICES=0 python basicsr/test.py -opt options/test/VidFace/test_tufs145k.yml
     ```
 - **Testing with Multiple GPU**:
     ```
+    CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 --master_port=4442 basicsr/test.py -opt options/test/VidFace/test_tufs145k.yml --launcher pytorch
     ```
+If you want to get the result of IJBC, plz use ```options/test/VidFace/test_ijbc.yml``` to replace ```options/test/VidFace/test_tufs145k.yml```.
