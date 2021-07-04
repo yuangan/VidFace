@@ -12,7 +12,7 @@ datasets:
     dataroot_gt: /data2/wei/vox-unalign/GT
     dataroot_lq: /data2/wei/vox-unalign/LR
     dataroot_flow: ~
-    meta_info_file: basicsr/data/meta_info/unalign_vox_train.txt  #############dododo
+    meta_info_file: basicsr/data/meta_info/tufs_train_val.txt  #############dododo
     io_backend:
       type: disk
 
@@ -35,7 +35,7 @@ datasets:
     type: VideoTestTUFS145KDataset
     dataroot_gt: /data2/wei/vox-unalign/GT
     dataroot_lq: /data2/wei/vox-unalign/LR
-    meta_info_file: basicsr/data/meta_info/unalign_vox_test.txt  ##########dododo
+    meta_info_file: basicsr/data/meta_info/tufs_test.txt  ##########dododo
     # change to 'meta_info_REDSofficial4_test_GT' when use the official validation partition
     io_backend:
       type: disk

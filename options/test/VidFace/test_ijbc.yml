@@ -24,7 +24,7 @@ network_g:
   type: VidFace
   
 path:
-  pretrain_model_g: experiments/unt2t_vit_h48_final_norm_l10_6/models/net_g_600000.pth
+  pretrain_model_g: experiments/vidface_unt2t_vit_final_norm_l10/models/net_g_600000.pth
   strict_load: true 
 
 # validation settings
