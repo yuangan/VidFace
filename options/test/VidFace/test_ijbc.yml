@@ -36,8 +36,8 @@ val:
     psnr: # metric name, can be arbitrary
       type: calculate_psnr
       crop_border: 0
-      test_y_channel: false
+      test_y_channel: true
     ssim:
       type: calculate_ssim
       crop_border: 0
-      test_y_channel: false
+      test_y_channel: true

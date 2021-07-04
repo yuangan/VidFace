@@ -156,7 +156,7 @@ class VideoTestDataset(data.Dataset):
 
 
 class VideoTestTUFS145KDataset(data.Dataset):
-    """Video test dataset for Vimeo90k-Test dataset.
+    """Video test dataset for TUFS145K-Test dataset.
 
     It only keeps the center frame for testing.
     For testing datasets, there is no need to prepare LMDB files.
@@ -181,7 +181,7 @@ class VideoTestTUFS145KDataset(data.Dataset):
         self.cache_data = opt['cache_data']
         if self.cache_data:
             raise NotImplementedError(
-                'cache_data in Vimeo90K-Test dataset is not implemented.')
+                'cache_data in TUFS145K-Test dataset is not implemented.')
         self.gt_root, self.lq_root = opt['dataroot_gt'], opt['dataroot_lq']
         self.data_info = {
             'lq_path': [],
@@ -218,7 +218,7 @@ class VideoTestTUFS145KDataset(data.Dataset):
                 for i in neighbor_list
             ]
             self.data_info['lq_path'].append(lq_paths)
-            self.data_info['folder'].append('vimeo90k')
+            self.data_info['folder'].append('TUFS145K')
             self.data_info['idx'].append(f'{idx}/{len(subfolders)}')
             self.data_info['border'].append(0)
 

@@ -69,7 +69,7 @@ class VideoBaseModel(SRModel):
                     raise NotImplementedError(
                         'saving image is not supported during training.')
                 else:
-                    if 'vimeo' in dataset_name.lower():  # vimeo90k dataset
+                    if 'vimeo' in dataset_name.lower():  # TUFS145K dataset
                         split_result = lq_path.split('/')
                         img_name = (f'{split_result[-3]}_{split_result[-2]}_'
                                     f'{split_result[-1].split(".")[0]}')
