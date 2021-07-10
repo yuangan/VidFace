@@ -25,7 +25,8 @@ network_g:
   
 # path
 path:
-  pretrain_model_g: experiments/vidface_unt2t_vit_final_norm_l10/models/net_g_600000.pth
+  # pretrain_model_g: experiments/vidface_unt2t_vit_final_norm_l10/models/net_g_600000.pth
+  pretrain_model_g: experiments/net_g_600000.pth
   strict_load: true
   
 # validation settings
@@ -37,8 +38,8 @@ val:
     psnr: # metric name, can be arbitrary
       type: calculate_psnr
       crop_border: 0
-      test_y_channel: true
+      test_y_channel: false
     ssim:
       type: calculate_ssim
       crop_border: 0
-      test_y_channel: true
+      test_y_channel: false

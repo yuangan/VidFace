@@ -14,8 +14,6 @@ metric_module = importlib.import_module('basicsr.metrics')
 
 from basicsr.radam.radam import RAdam, AdamW
 
-from basicsr.utils.hook_grad import Hook
-
 class SRModel(BaseModel):
     """Base SR model for single image super-resolution."""
 
@@ -116,12 +114,12 @@ class SRModel(BaseModel):
 
     def feed_data(self, data):
         self.lq = data['lq'].to(self.device)
+        if 'gt' in data:
+            self.gt = data['gt'].to(self.device)
         if 'flow' in data:
             self.flow = data['flow'].to(self.device)
         if 'gts' in data:
             self.gts = data['gts'].to(self.device)
-        if 'gt' in data:
-            self.gt = data['gt'].to(self.device)
         if 'lmks' in data:
             self.gt_lmks = data['lmks'].to(self.device)
         if 'flags' in data:
@@ -134,6 +132,26 @@ class SRModel(BaseModel):
         # with torch.cuda.amp.autocast():
         self.optimizer_g.zero_grad()
         self.outputs, self.lmks, self.outs = self.net_g(self.lq)
+        # print('max:offset :', self.offset_frames.max())
+        # print(self.offset_frames)
+        
+        # visualize network
+        # from torchviz import make_dot
+        # g = make_dot(self.output)
+        # g.render('netg_model', view=False)
+
+        # params = list(self.net_g.parameters())
+        # k = 0
+        # for i in params:
+        #     # print(i)
+        #     l = 1
+        #     print("该层的结构：" + str(list(i.size())))
+        #     for j in i.size():
+        #         l *= j
+        #     print("该层参数和：" + str(l))
+        #     k = k + l
+        # print("总参数数量和：" + str(k))
+        # assert(0)
     
         l_total = 0
         loss_dict = OrderedDict()
@@ -146,16 +164,63 @@ class SRModel(BaseModel):
                     lmksi = self.lmks[i]
                     l_lmk = (2**i)*F.smooth_l1_loss(lmksi[self.flags==1], self.gt_lmks[self.flags==1], reduction='sum')
                     l_lmks = l_lmks+l_lmk
+                # l_lmks = 0.
+#                 print(lmksi[self.flags==1].shape, self.gt_lmks[self.flags==1].shape)
                 l_total += l_lmks
                 loss_dict['l_lmks'] = l_lmks
+            # intermediate loss 12
+            if not self.outs is None:
+                l_pixels = 0
+                for o in self.outs:
+                    scale = int(self.gt.shape[2]/o.shape[2])
+                    l_pixels += 0.1*self.cri_pix(o, self.downsample(self.gt, scale))
+                l_pix = l_pixels + self.cri_pix(self.outputs, self.gt) 
+                                #  + 0.5*self.cri_pix(self.fout, self.gt)
+                # print(l_pix)
+            else:
+            # 10 / 11
+                # l_pix = self.cri_pix(self.output, self.gt)
+#                 print(self.outputs.shape, self.gts.shape)
+                l_pix = self.cri_pix(self.outputs, self.gts)
+                # center frame
+                self.output = self.outputs[:,3,:,:,:]
+                l_pix += self.cri_pix(self.output, self.gts[:,3,:,:,:])
 
-            l_pix = self.cri_pix(self.outputs, self.gts)
-            # center frame
-            self.output = self.outputs[:,3,:,:,:]
-            l_pix += self.cri_pix(self.output, self.gts[:,3,:,:,:])
-
+#             if(int(current_iter/10000)%2==0):
+#                 l_total += l_pix
             l_total += l_pix
             loss_dict['l_pix'] = l_pix
+        # offset loss
+        ######
+        
+        
+        if self.cri_offset:
+            l_offset = 0
+            b,t,p,c,h,w = self.offset_frames.size()
+            self.offset_frames = self.offset_frames.view(b,t,p*8,3,3,2,h,w).permute(2,3,4, 0,1,5,6,7)  ##16, 3(batchsize), 3, 3, 7, 2, 112, 112
+            self.flow = F.pad(self.flow,(1,1,1,1),'constant',0)   #3(b) 7 2 450 450
+            #print(self.flow.shape)
+            for group in self.offset_frames:
+                for i in range(0,3):
+                    for j in range(0,3):
+                        #print(group[i][j].shape ,self.flow[:,:,:,i:i+h,j:j+h].shape)
+                        l_offset += self.cri_offset(group[i][j],self.flow[:,:,:,i:i+h,j:j+h])
+            l_total += l_offset
+            #print('go',(current_iter/10000)%2)
+#             if(int(current_iter/10000)%2==1):
+
+#                 l_total += l_offset
+            loss_dict['l_offset'] = l_offset
+
+
+       # self.offset_frames_4 = self.offset_frames[:,3]
+       # test__ = torch.stack(self.offset_frames[:][:], dim=0)
+        #print(self.offset_frames.shape)
+        #self.offset_frames_3 = self.offset_frames_3.view(b,t,c,h,w)
+        #b,t,c,448,448
+        #b,t,2*9,448,448
+        #
+        ######
 
         if self.cri_perceptual:
             l_percep, l_style = self.cri_perceptual(self.output, self.gt)
@@ -165,14 +230,16 @@ class SRModel(BaseModel):
             if l_style is not None:
                 l_total += l_style
                 loss_dict['l_style'] = l_style
-        
+
         l_total.backward()
         torch.nn.utils.clip_grad_norm_(self.net_g.parameters(), 0.05)
         # torch.nn.utils.clip_grad_norm_(self.net_g.parameters(), 0.01)
         # torch.nn.utils.clip_grad_value_(self.net_g.parameters(), 0.1)
-
         self.optimizer_g.step()
 
+        num_params = sum(p.numel() for p in self.net_g.parameters() if p.requires_grad)
+        print('params_count: ', num_params/1e6)
+        assert(0)
         self.log_dict = self.reduce_loss_dict(loss_dict)
 
     def test(self):
@@ -211,7 +278,8 @@ class SRModel(BaseModel):
             # tentative for out of GPU memory
             # del self.lq
             # del self.output
-
+            # torch.cuda.empty_cache()
+            # print(save_img, 'gggggggggggggggggggg')
             if save_img:
                 if self.opt['is_train']:
                     save_img_path = osp.join(self.opt['path']['visualization'],
@@ -227,7 +295,9 @@ class SRModel(BaseModel):
                             self.opt['path']['visualization'], dataset_name,
                             f'{img_name}_{self.opt["name"]}.png')
                 mmcv.imwrite(sr_img, save_img_path)
-                
+                # print('save to /home/wei/gy/EDVR/flow_save_160/offset.npy')
+                # np.save('/home/wei/gy/EDVR/flow_save_160/offset.npy', visual['flow'])
+                # np.save('/home/wei/gy/EDVR/flow_save_160/mask.npy', visual['mask'])
             if with_metrics:
                 # calculate metrics
                 opt_metric = deepcopy(self.opt['val']['metrics'])
@@ -262,6 +332,11 @@ class SRModel(BaseModel):
         # out_flow = self.output[1].cpu().numpy()
         # out_mask = self.output[2].cpu().numpy()
         
+        # out_dict['flow'] = out_flow
+        # out_dict['mask'] = out_mask
+        # visual
+        # np.save('/home/wei/exp/EDVR/flow_save_160/offset.npy',out_flow)
+        # np.save('/home/wei/exp/EDVR/flow_save_160/mask.npy',out_mask)
         if hasattr(self, 'gt'):
             out_dict['gt'] = self.gt.detach().cpu()
         
