@@ -67,7 +67,7 @@ If you want to get the result in our paper, plz use the ```tufs_train_val.txt```
 
 - **Testing with One GPU**:
     ```
-    CUDA_VISIBLE_DEVICES=0 python basicsr/test.py -opt options/test/VidFace/test_tufs145k.yml
+    CUDA_VISIBLE_DEVICES=0 python basicsr/test.py -opt options/test/VidFace/test_tufs145k_final.yml
     ```
 - **Testing with Multiple GPU**:
     ```
