@@ -42,7 +42,7 @@ class VideoBaseModel(SRModel):
         # record all frames (border and center frames)
         if rank == 0:
             pbar = ProgressBar(len(dataset))
-        # save_psnr_file = open(f'psnr_{rank}.txt', 'w')
+        save_psnr_file = open(f'psnr_{rank}.txt', 'w')
         for idx in range(rank, len(dataset), world_size):
             val_data = dataset[idx]
             val_data['lq'].unsqueeze_(0)
@@ -63,7 +63,8 @@ class VideoBaseModel(SRModel):
             # del self.lq
             # del self.output
             # torch.cuda.empty_cache()
-
+            # print(save_img)
+            
             if save_img:
                 if self.opt['is_train']:
                     raise NotImplementedError(
@@ -104,13 +105,13 @@ class VideoBaseModel(SRModel):
                                      metric_type)(result_img, gt_img, **opt_)
                     self.metric_results[folder][int(frame_idx),
                                                 metric_idx] += result
-                    # save_psnr_file.write(f'{img_name} {metric_type} {result} \n')
+                    save_psnr_file.write(f'{img_name} {metric_type} {result} \n')
             # progress bar
             if rank == 0:
                 for _ in range(world_size):
                     pbar.update(f'Test {folder} - '
                                 f'{int(frame_idx) + world_size}/{max_idx}')
-        # save_psnr_file.close()
+        save_psnr_file.close()
         if with_metrics:
             if self.opt['dist']:
                 # collect data among GPUs
