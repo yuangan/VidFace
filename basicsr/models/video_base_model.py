@@ -42,7 +42,7 @@ class VideoBaseModel(SRModel):
         # record all frames (border and center frames)
         if rank == 0:
             pbar = ProgressBar(len(dataset))
-        save_psnr_file = open(f'psnr_{rank}.txt', 'w')
+        # save_psnr_file = open(f'psnr_{rank}.txt', 'w')
         for idx in range(rank, len(dataset), world_size):
             val_data = dataset[idx]
             val_data['lq'].unsqueeze_(0)
@@ -54,6 +54,20 @@ class VideoBaseModel(SRModel):
             self.feed_data(val_data)
             self.test()
             visuals = self.get_current_visuals()
+
+            # save all 7 frames results
+            if 'allresults' in visuals.keys():
+                save_img = False
+                img_name = osp.splitext(osp.basename(lq_path))[0]
+                split_result = lq_path.split('/')
+                img_name = (f'{split_result[-3]}_{split_result[-2]}_im')
+                for ind_ in range(7):
+                    save_img_path = osp.join(
+                            self.opt['path']['visualization'],
+                            folder, f'{img_name}{ind_}.png')
+                    tmpimg = tensor2img([visuals['allresults'][:,ind_,...]])
+                    mmcv.imwrite(tmpimg, save_img_path)
+
             result_img = tensor2img([visuals['result']])
             if 'gt' in visuals:
                 gt_img = tensor2img([visuals['gt']])
@@ -105,13 +119,13 @@ class VideoBaseModel(SRModel):
                                      metric_type)(result_img, gt_img, **opt_)
                     self.metric_results[folder][int(frame_idx),
                                                 metric_idx] += result
-                    save_psnr_file.write(f'{img_name} {metric_type} {result} \n')
+                    # save_psnr_file.write(f'{img_name} {metric_type} {result} \n')
             # progress bar
             if rank == 0:
                 for _ in range(world_size):
                     pbar.update(f'Test {folder} - '
                                 f'{int(frame_idx) + world_size}/{max_idx}')
-        save_psnr_file.close()
+        # save_psnr_file.close()
         if with_metrics:
             if self.opt['dist']:
                 # collect data among GPUs

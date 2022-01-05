@@ -173,6 +173,20 @@ class SRModel(BaseModel):
 
         self.optimizer_g.step()
 
+        ### calculate parameters
+        # num_params = sum(p.numel() for p in self.net_g.parameters() if p.requires_grad)
+        # print('params_count: ', num_params/1e6)
+        # assert(0)
+
+        # from ptflops import get_model_complexity_info
+
+        # with torch.cuda.device(0):
+        #     macs, params = get_model_complexity_info(self.net_g, (7, 3, 16, 12), as_strings=True,
+        #                                         print_per_layer_stat=True, verbose=True)
+        # print('{:<30}  {:<8}'.format('Computational complexity: ', macs))
+        # print('{:<30}  {:<8}'.format('Number of parameters: ', params))
+        # assert(0)
+
         self.log_dict = self.reduce_loss_dict(loss_dict)
 
     def test(self):
@@ -259,6 +273,7 @@ class SRModel(BaseModel):
         out_dict = OrderedDict()
         out_dict['lq'] = self.lq.detach().cpu()
         out_dict['result'] = self.output[0][:,3,:,:,:].detach().cpu()
+        # out_dict['allresults'] = self.output[0].detach().cpu() / 2 +0.5
         # out_flow = self.output[1].cpu().numpy()
         # out_mask = self.output[2].cpu().numpy()
         
