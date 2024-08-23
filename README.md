@@ -76,5 +76,5 @@ If you want to get the result in our paper, plz use the ```tufs_train_val.txt```
 If you want to get the result of IJBC, plz download 'IJBC' from above driver and extract 'IJBC_128_96_new.zip' to VidFace-main fold. Then test by relace ```options/test/VidFace/test_ijbc_final.yml``` with  ```options/test/VidFace/test_tufs145k_final.yml```.
 
 ## 🍇: Trained Model
-If you don't want to train it by yourself, we provide a trained VidFace with 600000 iters now. you can download from above link in 'model' folder. Move 'net_g_600000.pth' to './experiments/' then you can get the result in our paper during testing.
+If you don't want to train it by yourself, we provide a trained VidFace with 600000 iters now. you can download from [here](https://pan.baidu.com/s/1tzXhLgySyH27w58Jr3xU3g#list/path=%2FVidFace) in 'model' folder. Move 'net_g_600000.pth' to './experiments/' then you can get the result in our paper during testing.
 
